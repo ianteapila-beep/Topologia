@@ -157,6 +157,11 @@ void *BuscarTopologias(void *arg)
                 i = 0        i = 1      i = 2       i = 3
                 [1][0]       [1][1]     [1][0]      [1][1]
                 [0][1]       [0][1]     [1][1]      [1][1]
+        En donde:
+        0 = Vacio
+        1 = paco
+        2 = luis
+        3 = paco,luis
         */
         for (int x = 0, e = 0; x < T; ++x)
         for (int y = 0; y < T; ++y) 
@@ -258,45 +263,55 @@ void Ingresa_Elementos()
 {
 
     printf("Ingresa la cantidad de elementos: ");
-    char c = '0';
+    char c;
     do
     {
+        c = '0';
         if(!scanf(" %d", &T))
         {
             printf("Dato invalido\n");
             while(c != '\n' && c != EOF)
                 c = getchar();
+            T = -1;
         }
-        if(T <= 0 || T > 8)
-            printf("Ingresa un numero Natural menor o igual a 8: \n");
-        
-        if(T >= 6 && T <= 8)
+        else
         {
-            printf("El proceso puede tardar demasiado tiempo en terminar, aproximadamente:,");
-            switch(T)
-            {
-                case 6:
-                    printf("entre 24 y 40 HORAS(°o°)\n");
-                    break;
-                case 7:
-                    printf("entre 11 y 30 ANIOS (T-T)\n");
-                    break;
-                default:
-                    printf("No se, posiblemente EONES de ANIOS (x_x)\n");
-            }
-            do
-            {
-                printf("Quieres continuar?(s/n): ");
-                scanf(" %c", &c);
-                if(c == 'n') T = -1;
-                    else if(c == 's')
-                        {
-                            printf("Seguro(a)?");
-                            scanf(" %c", &c);
-                            if(c == 'n') T = -1;
-                        }
-            } while(c != 's' && T > 0);
+            if(T <= 0 || T > 8)
+                printf("Ingresa un numero Natural menor o igual a 8: \n");
             
+            if(T >= 6 && T <= 8)
+            {
+                printf("El proceso puede tardar demasiado tiempo en terminar, aproximadamente:,");
+                switch(T)
+                {
+                    case 6:
+                        printf("entre 24 y 40 HORAS(°o°)\n");
+                        break;
+                    case 7:
+                        printf("entre 11 y 30 ANIOS (T-T)\n");
+                        break;
+                    default:
+                        printf("No se, posiblemente EONES de ANIOS (x_x)\n");
+                }
+                do
+                {
+                    printf("Quieres continuar?(s/n): ");
+                    if(scanf(" %c", &c))
+                    {
+                        if(c == 'n') T = -1;
+                            else if(c == 's')    
+                            {
+                                printf("Seguro(a)?");
+                                if(scanf(" %c", &c))
+                                    if(c == 'n') T = -1;
+                            }
+                    }
+                    else
+                        printf("Opcion no valida\n");
+
+                } while(c != 's');
+                
+            }
         }  
     }while(T <= 0 || T > 8);
 
@@ -308,13 +323,13 @@ void Ingresa_Elementos()
         int j = 0, r = 0;
         do
         {
+            c = '0';
             printf("Ingresa el %d elemento:", i+1);
             fflush(stdin);
             while((c = getchar()) != '\n')
-                if(isalnum(c)) 
+                if(isalnum(c) && j < 5) 
                 {
                     aux[j] = c;
-                    if(j < 5)
                         ++j;
                 }
             aux[j] = '\0';
